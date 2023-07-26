@@ -23,5 +23,24 @@
             })
                 
         })
+    },
+    getProductDetails:(proId)=>{
+        return new Promise(async (resolve,reject)=>{
+            await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:new objectId(proId)}).then((product)=>{
+                resolve(product)
+            })
+        })
+    },
+    updateProduct:(proId,proDetails)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:new objectId(proId)},{$set:{
+                Name:proDetails.Name,
+                Description:proDetails.Description,
+                Category:proDetails.Category,
+                Price:proDetails.Price
+            }}).then(()=>{
+                resolve()
+            })
+        })
     }
  }
