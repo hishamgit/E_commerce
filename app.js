@@ -10,6 +10,8 @@ var hbs = require('express-handlebars')
 var app = express();
 var db=require('./config/connection')      // connection folder
 var session=require('express-session')
+var Razorpay=require('razorpay')
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

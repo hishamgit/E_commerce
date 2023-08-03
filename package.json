@@ -7,16 +7,17 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
+    "cookie-parser": "~1.4.6",
+    "debug": "~4.3.4",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
-    "express-handlebars": "^7.1.0",
+    "express-handlebars": "^7.1.1",
     "express-session": "^1.17.3",
     "hbs": "^4.2.0",
-    "http-errors": "~1.6.3",
+    "http-errors": "~2.0.0",
     "mongodb": "^5.7.0",
-    "morgan": "~1.9.1",
-    "promise": "^8.3.0"
+    "morgan": "~1.10.0",
+    "promise": "^8.3.0",
+    "razorpay": "^2.9.1"
   }
 }

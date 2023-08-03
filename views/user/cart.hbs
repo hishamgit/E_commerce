@@ -1,27 +1,36 @@
 <section>
-    <div class="container">
+    <div class="container" >
         <table class="table mt-5">
             <thead>
                 <th scope="col">Item</th>
                 <th scope="col">Title</th>
-                <th scope="col">Category</th>
+                <th scope="col">Price</th>
                 <th scope="col" class="p-2">Quantity</th>
             </thead>
             <tbody>
                 {{#each data}}
                 <tr>
-                    <td><img src="/product_images/{{this._id}}.png"alt="" style="width: 70px;height: 70px;"></td>
-                    <td>{{this.Name}}</td>
-                    <td>{{this.Category}}</td>
+                    
+                    <td><img src="/product_images/{{this.product._id}}.png"alt="" style="width: 70px;height: 70px;"></td>
+                    <td>{{this.product.Name}}</td>
+                    <td>Rs: {{this.product.Price}}</td>
                     <td>
-                        <button class="cart-item-count m-2">-</button>1<button class="cart-item-count m-2">+</button>
-                    </td>
+                       
+                        <button class="cart-item-count m-2" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button><span id="{{this.product._id}}">{{this.quantity}}</span><button class="cart-item-count m-2" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button> {{!-- {{this._id should be in '',pass as string, number dont need '',note use of span to catch quantity for script,{{../user._id}} for taking user outside loop}} --}}
+                        
                     <td>
-                        <a href="" class="btn btn-danger">Remove</a>
+                        <a href="" class="btn btn-danger" onclick="removeItem('{{this._id}}','{{this.product._id}}')">Remove</a>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
+        <hr>
+            <h4 class="float-end" >Total: Rs <span id="total">{{data1}}</span> </h4>
+        <br>
+        <br>  
+            <a class="btn btn-success float-end" href="/place_order" role="button">Place order</a>
     </div>
 </section>
+
+ 
