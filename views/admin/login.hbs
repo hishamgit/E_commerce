@@ -1,0 +1,52 @@
+<section>
+    <div class="container">
+        <div class="row p-5">
+            <form action="/admin/adminlogin" method="post"> 
+                <h2 class="text-center">Login</h2>
+                {{#if loginErr}}
+                    <p class="error" style="display: block;padding-left: 370px;">admin {{loginErr}}</p>
+                {{/if}}
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                    <input type="email" name="Email" id="form2Example1" class="form-control" style="width: 300px;display: block;
+             margin : 0 auto;" />
+                    <label class="form-label" style="display: block;padding-left: 370px;" for="form2Example1">Email
+                        address</label>
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                    <input type="password" name="Password" id="form2Example2" class="form-control" style="width: 300px;display: block;
+             margin : 0 auto;" />
+                    <label class="form-label" for="form2Example2"
+                        style="display: block;padding-left: 370px;">Password</label>
+                </div>
+
+                <!-- 2 column grid layout for inline styling -->
+                <div class="row mb-2">
+                    <div class="col d-flex justify-content-center">
+                        <!-- Checkbox -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="form2Example31"
+                                style="display: block;margin-left:300px;" checked />
+                            <label class="form-check-label" for="form2Example31"
+                                style="display: block;padding-left: 330px;"> Remember me </label>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <!-- Simple link -->
+                        <a href="#!">Forgot password?</a>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4"
+                    style="display: block;margin: 2em auto;">Sign in</button>
+
+                <!-- Register buttons -->
+                
+            </form>
+        </div>
+    </div>
+</section>

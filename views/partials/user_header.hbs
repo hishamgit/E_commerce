@@ -17,7 +17,7 @@
                     </li>
                     {{#if user}}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Orders</a>
+                        <a class="nav-link" href="/front_display">Orders</a>
                     </li>
                     {{/if}}
                 </ul>
@@ -33,6 +33,7 @@
                     <ul class="dropdown-menu">
                         {{#if user}}                {{!-- {{user not as(user)}} --}}
                             <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="/user_profile/{{user._id}}">Profile</a></li>
                             {{else}}
                             <li><a class="dropdown-item" href="/login">Login</a></li>
                         {{/if}}

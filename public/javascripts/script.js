@@ -2,6 +2,7 @@
 
 //  const { response } = require("../../app");
 
+
 function addToCart(proId){
     $.ajax({
         url:'/add_to_cart/'+proId, //proId passed with url
@@ -55,6 +56,9 @@ function removeItem(cartId,proId){
     })
 }; 
 
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
 
 
 

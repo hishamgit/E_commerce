@@ -1,9 +1,10 @@
 var db = require('../config/connection')
 var collection = require('../config/collections')
-const bcrypt = require('bcrypt')
+var bcrypt = require('bcrypt')
 const Promise = require('promise')
 var objectId=require('mongodb').ObjectId
 var Razorpay=require('razorpay')
+const { resolve } = require('path')
 var instance = new Razorpay({ key_id: 'rzp_test_JPdrAvWLBaxHLJ', key_secret: 'xYFoD0cgIccC2466NPivqSJ5' })
 
 module.exports = {
@@ -210,7 +211,7 @@ module.exports = {
             })
         },
         placeOrder: (order, products, total) => {
-            let products0= [products.map(function (a) { return [a.item, a.quantity] })]
+            // let products0= [products.map(function (a) { return [a.item, a.quantity] })]
             return new Promise((resolve, reject) => {
                 // console.log(order,products,total)
                 let status = order.pay === 'COD' ? 'placed' : 'pending'  //if 
@@ -222,12 +223,14 @@ module.exports = {
                     },
                     userId: new objectId(order.userId),
                     paymentMethod: order.pay,
-                    products: products0[0],
+                    products: products,//products: products0[0],
                     status: status,
                     totalAmount: total[0].total,
-                    date: new Date()
+                    date: new Date(),
+                    ship: false
+                    
                 }
-                // console.log(orderObj)
+                //  console.log(orderObj)
                 db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((orderId) => {
                     db.get().collection(collection.CART_COLLECTION).deleteOne({ user: new objectId(order.userId) })
                     resolve(orderId.insertedId)
@@ -259,8 +262,8 @@ module.exports = {
                     {
                         $project:
                         {
-                           item: { $arrayElemAt: [ "$products", 0 ] },
-                           quantity: { $arrayElemAt: [ "$products", 1 ] } //array positional filter
+                           item: '$products.item',
+                           quantity: '$products.quantity'
                         }
                     },
                     {
@@ -302,6 +305,38 @@ module.exports = {
                   })
             })
         },
-       
+       verifyPayment:(details)=>{
+        return new Promise((resolve,reject)=>{
+            var crypto = require('crypto');
+            let hmac=crypto.createHmac('sha256','xYFoD0cgIccC2466NPivqSJ5')
+            
+            hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
+            hmac=hmac.digest('hex')       //convert to hex code for comparing
+            if(hmac==details['payment[razorpay_signature]']){
+                resolve()
+            }else{
+                reject()
+            }
+        })
+       },
+       changePaymentStatus:(orderId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:new objectId(orderId)},
+            {
+                $set:{
+                    status:'placed'
+                }
+            }
+            ).then(()=>{
+                resolve()
+            })
+        })
+       },
+       getUser:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let data=await db.get().collection(collection.USER_COLLECTION).findOne({_id:new objectId(userId)})
+            resolve(data)
+        })
+       },
     
 }

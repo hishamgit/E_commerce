@@ -1,0 +1,25 @@
+<section>
+    <div class="container"> 
+        <table class="table mt-5">
+            <h3 class="text-align: center">All users</h3>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                       <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                               
+                    <td>{{this.Name}}</td>              {{!-- {{this.Name is case sensitive }} --}}
+                    <td>{{this.Email}}</td>
+                    <td>{{this.Password}}</td>
+                    
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

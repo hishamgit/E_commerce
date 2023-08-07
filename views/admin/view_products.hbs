@@ -2,9 +2,9 @@
     <div class="container">
         <div class="text-left ml-4">
                               {{!-- {{when class is row button takes full width }} --}}
-            <a href="/admin/add_products" class="btn btn-success float-end me-5 mt-3" >Add products</a>
+            <a href="/admin/add_products" class="btn btn-success float-start me-5 mt-3" >Add products</a>
         </div>  
-        <table class="table mt-5">
+        <table class="table mt-5" id="productsTable">
             <thead>
                 <tr>
                     <th scope="col">No</th>
@@ -12,6 +12,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Description</th>
                     <th>Image</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>

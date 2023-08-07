@@ -13,9 +13,9 @@
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/products">All products</a>
+                            <a class="nav-link" href="/admin/orders">All orders</a>
                         </li>
-                        <li class="nav-item dropdown">
+                        {{!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 Dropdown
@@ -28,15 +28,29 @@
                                 </li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link disabled">All users</a>
+                            <a class="nav-link" href="/admin/users">All users</a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle show" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="true">
+                        {{#if admin}}                {{!-- {{user not as(user)}} --}}
+                            Hisham
+                            {{else}}
+                            Account
+                        {{/if}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        {{#if admin}}                {{!-- {{user not as(user)}} --}}
+                            <li><a class="dropdown-item" href="/admin/logout">Logout</a></li>
+                            {{else}}
+                            <li><a class="dropdown-item" href="/admin/adminlogin">Login</a></li>
+                        {{/if}}
+                        
+                    </ul>
+                </div>
                 </div>
             </div>
         </nav>

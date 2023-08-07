@@ -85,7 +85,14 @@
             data:{
                 payment,order
             },
-            method:'post'
+            method:'post',
+            success:(response)=>{
+                if(response.status){
+                    location.href='/order'
+                }else{
+                    alert('payment failed')
+                }
+            }
         })
     }
 

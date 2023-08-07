@@ -5,7 +5,7 @@ const userHelper=require('../helpers/user_helpers')
 
 //check whether seesion is on
 const verifyLogin=(req,res,next)=>{
-  if(req.session.loggedIn){
+  if(req.session.user){
     next()
   }else{
     res.redirect('/login')
@@ -30,11 +30,11 @@ router.get('/',async function(req, res, next) {
 
 /* GET login page. */
 router.get('/login',(req,res,next)=>{
-  if(req.session.loggedIn){
+  if(req.session.user){
     res.redirect('/')           //wont goto login page if press back
   }else{
-    res.render('user/login',{"loginErr":req.session.loginErr})
-    req.session.loginErr=false
+    res.render('user/login',{"loginErr":req.session.userloginErr})
+    req.session.userloginErr=false
   }
 })
 router.get('/signup',(req,res)=>{
@@ -43,24 +43,27 @@ router.get('/signup',(req,res)=>{
 router.post('/signup',(req,res)=>{
   userHelper.doSignup(req.body).then((response)=>{
     console.log(response)
-    req.session.loggedIn=true
+    
     req.session.user=response
+    req.session.userLoggedIn=true
   })
 })
 router.post('/login',(req,res)=>{
   userHelper.doLogin(req.body).then((response)=>{
     if(response.status){
-      req.session.loggedIn=true  //a variable
+ 
       req.session.user=response.user
+      req.session.userLoggedIn=true  //a variable
       res.redirect('/')
     }else{
-      req.session.loginErr="Invalid username or password"
+      req.session.userloginErr="Invalid username or password"
       res.redirect('/login')
     }
   })
 })
 router.get('/logout',(req,res)=>{
-  req.session.destroy()  
+  req.session.user=null      //not destroy() session
+  req.session.userLoggedIn=false
   res.redirect('/')
 })
 router.get('/cart',verifyLogin,async(req,res)=>{
@@ -108,7 +111,11 @@ router.get('/place_order',verifyLogin,async(req,res)=>{
 })
 router.post('/place_order',async (req,res)=>{
   let products=await userHelper.getCartProducts(req.body.userId)
-  let totalPrice=await userHelper.getTotalAmount(req.body.userId)
+  let totalPrice=0
+  if(products.length>0){
+    totalPrice=await userHelper.getTotalAmount(req.body.userId)
+  }
+   
 userHelper.placeOrder(req.body,products,totalPrice).then((orderId)=>{
   if(req.body['pay']==='COD'){
     res.json({codSuccess:true})
@@ -135,5 +142,28 @@ router.get('/view_order',verifyLogin,async(req,res)=>{
 })
 router.post('/verify_payment',(req,res)=>{
   console.log(req.body)
+  userHelper.verifyPayment(req.body).then(()=>{
+    userHelper.changePaymentStatus(req.body['order[receipt]']).then(()=>{
+      console.log('payment success')
+      res.json({status:true})
+    }).catch((err)=>{
+      // console.log(err)
+      res.json({status:false,errMsg:err})
+    })
+  })
 })
+router.get('/front_display',verifyLogin,async(req,res)=>{
+  let order_data=await userHelper.getOrderProducts(req.session.user._id)  //Promise { _x: 0, _y: 0, _z: null, _A: null } if no await
+  // console.log(order_data)
+  let details= await userHelper.getOrderDetails(req.session.user._id)
+  console.log(details[0].ship)
+  data=details[0].ship
+  res.render('user/order_data',{order_data,data})
+})
+router.get('/user_profile/:id',async(req,res)=>{
+  let userData=await userHelper.getUser(req.params.id)
+  // console.log(userData)
+  res.render('user/profile',{userData})
+})
+
 module.exports = router; 

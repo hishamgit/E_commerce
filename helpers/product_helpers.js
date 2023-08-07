@@ -2,6 +2,8 @@
  var collection=require('../config/collections')
  const Promise=require('promise') 
  var objectId=require('mongodb').ObjectId
+ var bcrypt = require('bcrypt')
+
  module.exports={
     addProduct:(product,callback)=>{
         //console.log(product)
@@ -43,5 +45,60 @@
                 resolve()
             })
         })
+    },
+    getAllOrder:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let order=await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+            resolve(order)
+        })
+    },
+    getAllUser:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let user=await db.get().collection(collection.USER_COLLECTION).find().toArray()
+            resolve(user)
+        })
+    },
+    getProcessingOrders:(userid)=>{
+        return new Promise(async(resolve,reject)=>{
+            let products=await db.get().collection(collection.ORDER_COLLECTION).findOne({_id:new objectId(userid)})
+            resolve(products)
+        })
+    },
+    changeShip:(orderId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:new objectId(orderId)},{
+                $set:{
+                    ship:true
+                }
+            }).then(()=>{
+                resolve()
+            })
+        })
+    },
+    doAdminLogin:(adminData)=>{
+        return new Promise(async(resolve,reject)=>{
+            let response = {}
+            let admin = await db.get().collection('admin').findOne({mail:adminData.Email})
+            
+                console.log(adminData.Password)
+                console.log(admin.password)
+                bcrypt.compare(adminData.Password,admin.password).then((status) => {
+                    // console.log(status)
+                    if (status) {
+                        console.log('login success')
+                        response.admin = admin
+                        response.status = true
+                        resolve(response)
+                        // console.log(user)
+                    } else {
+                        console.log('login failed password incorrect')
+                        resolve({ status: false })
+                    }
+
+                })
+
+            
+        })
     }
+
  }

@@ -1,33 +1,35 @@
 <section>
     <div class="container"> 
         <table class="table mt-5">
+            <h3 class="text-align: center">All orders</h3>
             <thead>
                 <tr>
-                    <th scope="col">Date</th>
                     <th scope="col">Address</th>
-                    <th scope="col">Pincode</th>
+                       <th scope="col">PIN</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Mobile</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Payment</th>
                     <th scope="col">Status</th>
+
                 </tr>
             </thead>
             <tbody>
                 {{#each orders}}
-                  <tr> 
-                     <td>{{this.date}}</td>
+                               
                     <td>{{this.deliveryDetails.address}}</td>              {{!-- {{this.Name is case sensitive }} --}}
                     <td>{{this.deliveryDetails.pin}}</td>
+                    <td>{{this.date}}</td>
                     <td>{{this.deliveryDetails.mobile}}</td>
                     <td>{{this.totalAmount}}</td>
                     <td>{{this.paymentMethod}}</td>
                     <td>{{this.status}}</td>
-                     <td><a href="/view_order" class="btn btn-primary m-0 p-0 " style="height: 50px;width: auto;">View details</a></td>
-                        
+                    <td>
+                        <a href="/admin/orderProducts/{{this._id}}" class="btn btn-primary m-0 p-0" style="height: 50px;width: auto;">view details</a>
+                    </td>
                     
                 </tr>
                 {{/each}}
-
             </tbody>
         </table>
     </div>
