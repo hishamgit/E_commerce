@@ -12,7 +12,10 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             userData.Password = await bcrypt.hash(userData.Password, 10)  // '10' is how fast
             db.get().collection(collection.USER_COLLECTION).insertOne(userData).then(async (data) => {
-                resolve(await db.get().collection(collection.USER_COLLECTION).find(userData._id).toArray()) //data._id won't work
+                resolve(await db
+                  .get()
+                  .collection(collection.USER_COLLECTION)
+                  .findOne({ Email: userData.Email })) //data._id won't work
             })
         })
     },
